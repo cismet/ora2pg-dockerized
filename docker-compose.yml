@@ -4,12 +4,12 @@ services:
    ora2pg-client:
       build:
          context: ./ora2pg-client
-      image: ariolor/database/tools/ora2pg-client
+      image: cismet/ora2pg-client:1.0-SNAPSHOT
       environment:
-         - DB_HOST= Add here db host
-         - DB_SID= Add here db sid
-         - ORA2PG_USER= Add here db user
-         - ORA2PG_PASSWD= Add here db user password
+         - DB_HOST=${DB_HOST}
+         - DB_SID=${DB_SID}
+         - ORA2PG_USER=${ORA2PG_USER}
+         - ORA2PG_PASSWD=${ORA2PG_PASSWD}
       container_name: ora2pg-client
       volumes:
          - .:/export
