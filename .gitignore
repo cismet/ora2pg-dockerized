@@ -1,5 +1,6 @@
 # ora2pg-dockerized
-/export
+/export/*
+/ora2pg-client/oracle/*.rpm
 
 # docker
 ora2pg-client/.env

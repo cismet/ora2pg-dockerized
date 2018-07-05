@@ -20,8 +20,7 @@ COPY [ "./scripts/oracle_test.pl", "/app/oracle_test.pl" ]
 RUN [ "chmod", "+x",  "/app/oracle_test.pl" ]
 
 COPY scripts/chkconfig /sbin/chkconfig
-chmod 755 /sbin/chkconfig
-
+RUN [ "chmod", "755",  "/app/oracle_test.pl" ]
 
 # now Oracle
 # see http://www.aboutmonitoring.com/install-dbd-oracle-perl-modules-in-linux/
@@ -32,8 +31,7 @@ COPY [ "./oracle/*.rpm", "/app/" ]
 
 WORKDIR /app
 RUN ["apt-get", "update"]
-RUN ["apt-get", "install", "libaio-dev", "libaio1", "unixodbc", "wget", "make", "libdbi-perl", "bzip2", "libstdc++5", "bc" ]
-RUN ["apt-get", "install", "-qy", "--force-yes", "alien" ]
+RUN ["apt-get", "install", "-qy", "--force-yes", "libaio-dev", "libaio1", "unixodbc", "wget", "make", "libdbi-perl", "bzip2", "libstdc++5", "bc", "alien", "postgresql-client", "libpq-dev", "libdbd-pg-perl"]
 
 RUN alien --scripts /app/oracle-instantclient$ORACLE_CLIENT_VERSION-basic-$ORACLE_CLIENT_VERSION_EXTENDED-1.x86_64.rpm
 RUN alien --scripts /app/oracle-instantclient$ORACLE_CLIENT_VERSION-devel-$ORACLE_CLIENT_VERSION_EXTENDED-1.x86_64.rpm
@@ -44,10 +42,13 @@ RUN dpkg -i /app/oracle-instantclient$ORACLE_CLIENT_VERSION-devel_$ORACLE_CLIENT
 RUN dpkg -i /app/oracle-instantclient$ORACLE_CLIENT_VERSION-sqlplus_$ORACLE_CLIENT_VERSION_EXTENDED-2_amd64.deb
 
 ENV ORACLE_SID=XE 
-ENV ORACLE_HOME /usr/lib/oracle/$ORACLE_CLIENT_VERSION/client64
+
+# UN-BE-LIEVeABLE! hacketyhack: "Actually if you want to use the rpms and cpan to install, you have to set ORACLE_HOME to the lib folder, not just client64 and add sqlplus to the path" (https://stackoverflow.com/questions/26200174/error-while-installing-dbdoracle)
+
+ENV ORACLE_HOME /usr/lib/oracle/$ORACLE_CLIENT_VERSION/client64/lib
 ENV NLS_LANG=$ORACLE_HOME/bin/nls_lang.sh 
-ENV PATH $PATH:$HOME/bin:$ORACLE_HOME/bin
-ENV LD_LIBRARY_PATH $LD_LIBRARY_PATH:$ORACLE_HOME/lib
+ENV PATH $PATH:$HOME/bin:/usr/lib/oracle/$ORACLE_CLIENT_VERSION/client64/bin
+ENV LD_LIBRARY_PATH $LD_LIBRARY_PATH:/usr/lib/oracle/$ORACLE_CLIENT_VERSION/client64/lib
 ENV TNS_ADMIN $ORACLE_HOME/network/admin
 ENV ORACLE_BASE=/app/oracleexport 
 
@@ -68,10 +69,7 @@ RUN wget https://sourceforge.net/projects/ora2pg/files/$ORA2PG_VERSION/ora2pg-$O
     cp ora2pg.conf.dist ora2pg.conf
 
 
-RUN apt-get update && apt-get install -y unzip alien libaio1 unixodbc wget perl-modules-5.22 make libdbi-perl bzip2 libstdc++5 bc &&\
-
-
-COPY configuration/ora2pg.conf /etc/ora2pg/ora2pg.conf    
+#COPY configuration/ora2pg.conf /etc/ora2pg/ora2pg.conf    
 COPY run.sh /usr/local/bin/run.sh
 
 ENTRYPOINT ["run.sh"]

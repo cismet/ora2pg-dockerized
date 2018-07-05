@@ -1,0 +1,1 @@
+docker run -i -t --rm --privileged=true -v ./export:/export --name ora2pg cismet/ora2pg-client:1.0-SNAPSHOT /bin/bash

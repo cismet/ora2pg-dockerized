@@ -12,4 +12,4 @@ services:
          - ORA2PG_PASSWD=${ORA2PG_PASSWD}
       container_name: ora2pg-client
       volumes:
-         - .:/export
+         - ./export:/export
