@@ -20,22 +20,22 @@
 ORACLE_HOME	/usr/lib/oracle/12.2/client64/lib
 
 # Set Oracle database connection (datasource, user, password)
-ORACLE_DSN	dbi:Oracle:host=${DB_HOST};sid=${DB_SID}
-ORACLE_USER	${DB_USER}
-ORACLE_PWD	${DB_PASSWORD}
+ORACLE_DSN	dbi:Oracle:host=mydb.mydom.fr;sid=SIDNAME;port=1521
+ORACLE_USER	system
+ORACLE_PWD	manager
 
 # Set this to 1 if you connect as simple user and can not extract things
 # from the DBA_... tables. It will use tables ALL_... This will not works
 # with GRANT export, you should use an Oracle DBA username at ORACLE_USER
-USER_GRANTS     1
+USER_GRANTS     0
 
 # Trace all to stderr
-DEBUG		1
+DEBUG		0
 
 # This directive can be used to send an initial command to Oracle, just after
 # the connection. For example to unlock a policy before reading objects or
 # to set some session parameters. This directive can be used multiple time.
-ORA_INITIAL_COMMAND
+#ORA_INITIAL_COMMAND
 
 
 #------------------------------------------------------------------------------
@@ -43,10 +43,10 @@ ORA_INITIAL_COMMAND
 #------------------------------------------------------------------------------
 
 # Export Oracle schema to PostgreSQL schema
-EXPORT_SCHEMA	1
+EXPORT_SCHEMA	0
 
 # Oracle schema/owner to use
-SCHEMA		${DB_SCHEMA}
+#SCHEMA		SCHEMA_NAME
 
 # Enable/disable the CREATE SCHEMA SQL order at starting of the output file.
 # It is enable by default and concern on TABLE export type.
@@ -81,7 +81,7 @@ COMPILE_SCHEMA	0
 
 # Use this directive to add a specific schema to the search path to look
 # for PostGis functions.
-POSTGIS_SCHEMA		
+#POSTGIS_SCHEMA		
 
 # Allow to add a comma separated list of system user to exclude from 
 # Oracle extraction. Oracle have many of them following the modules

@@ -64,14 +64,11 @@ RUN wget https://sourceforge.net/projects/ora2pg/files/$ORA2PG_VERSION/ora2pg-$O
     tar jxf ora2pg-$ORA2PG_VERSION.tar.bz2 &&\
     cd ora2pg-$ORA2PG_VERSION &&\
     perl Makefile.PL &&\
-    make && make install &&\
-    cd /etc/ora2pg &&\
-    cp ora2pg.conf.dist ora2pg.conf
-
+    make && make install
 
 #COPY configuration/ora2pg.conf /etc/ora2pg/ora2pg.conf    
 COPY run.sh /usr/local/bin/run.sh
 
-ENTRYPOINT ["run.sh"]
+#ENTRYPOINT ["run.sh"]
 # if you wan't to use it interactivly comment the next line
 #ENTRYPOINT [ "/app/oracle_test.pl" ]
