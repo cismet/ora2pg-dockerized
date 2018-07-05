@@ -15,4 +15,4 @@ services:
       volumes:
          - ./export:/export
          - ./ora2pg-client/configuration/ora2pg.conf:/etc/ora2pg/ora2pg.conf
-      entrypoint: /bin/sh
+      command: tail -f /dev/null
